@@ -52,19 +52,19 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item has-treeview menu-open-">
-                    <a href="javascript:;" class="nav-link">
+                <li class="nav-item has-treeview {{ Request::segment(2) == 'pagarme' ? 'menu-open' : '' }}">
+                    <a href="javascript:;" class="nav-link {{ Request::segment(2) == 'pagarme' ? 'active' : '' }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>Pagarme <i class="right fas fa-angle-left"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.plan.index') }}" class="nav-link {{ Request::segment(2) == 'pagarme' && Request::segment(3) == 'plan' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Planos</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Recebedores</p>
@@ -87,7 +87,7 @@
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Transferências</p>
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
             </ul>
