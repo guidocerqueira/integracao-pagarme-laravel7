@@ -37,7 +37,6 @@
             <form action="{{ route('admin.user.update', ['user' => $user->id]) }}" method="post">
                 @csrf
                 @method('PUT')
-                <input type="hidden" name="id" value="{{ $user->id }}">
 
                 <div class="card-body">
                     <div class="form-group">
@@ -150,7 +149,7 @@
                 </div>
 
                 <div class="card-footer text-right">
-                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                    <button type="submit" class="btn btn-success">Atualizar</button>
                     <a href="javascript:void(0);" class="btn btn-danger delete_item_sweet" data-action="{{ route('admin.user.destroy', ['user' => $user->id]) }}"><i class="fas fa-trash"></i> Excluir</a>
                 </div>
             </form>

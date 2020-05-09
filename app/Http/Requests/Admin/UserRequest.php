@@ -24,12 +24,14 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
+        $id = $this->user;
+
         return [
             'name' => 'required|min:3|max:191',
-            'email' => (!empty($this->request->all()['id']) ? 'required|email|unique:users,email,' . $this->request->all()['id'] : 'required|email|unique:users,email'),
-            'password' => (!empty($this->request->all()['id']) ? '' : 'required'),
+            'email' => "required|email|unique:users,email,{$id},id",
+            'password' => $this->method() === 'PUT' ? '' : 'required',
             'genre' => 'in:male,female,other',
-            'cpf' => (!empty($this->request->all()['id']) ? 'required|min:11|max:14|unique:users,cpf,' . $this->request->all()['id'] : 'required|min:11|max:14|unique:users,cpf'),
+            'cpf' => "required|min:11|max:14|unique:users,cpf,{$id},id",
             'cell' => 'required',
         ];
     }
