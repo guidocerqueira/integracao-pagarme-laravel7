@@ -83,7 +83,8 @@ class PlanController extends Controller
                 'days' => $createPagarmePlan['days'],
                 'trial_days' => $createPagarmePlan['trial_days'],
                 'status' => $data['status'],
-                'payment_methods' => $data['payment_methods']
+                'payment_methods' => $data['payment_methods'],
+                'benefits' => $data['benefits']
             ]);
 
             DB::commit();
@@ -156,6 +157,7 @@ class PlanController extends Controller
             $plan->name = $editPagarmePlan['name'];
             $plan->trial_days = $editPagarmePlan['trial_days'];
             $plan->status = $data['status'];
+            $plan->benefits = $data['benefits'];
             $plan->save();
 
             DB::commit();

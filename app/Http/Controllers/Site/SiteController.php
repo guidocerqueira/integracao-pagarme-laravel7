@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
+use App\Plan;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -25,7 +26,11 @@ class SiteController extends Controller
 
     public function plans()
     {
-        return view('site.plan');
+        $plans = Plan::where('status', 1)->orderBy('amount', 'asc')->get();
+
+        return view('site.plan', [
+            'plans' => $plans
+        ]);
     }
 
     public function formLogin()

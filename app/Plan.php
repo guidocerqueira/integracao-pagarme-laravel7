@@ -13,7 +13,8 @@ class Plan extends Model
         'days',
         'trial_days',
         'payment_methods',
-        'status'
+        'status',
+        'benefits'
     ];
 
     public function setAmountAttribute($value)
@@ -45,6 +46,11 @@ class Plan extends Model
     public function setStatusAttribute($value)
     {
         $this->attributes['status'] = ($value == '1' ? 1 : 0);
+    }
+
+    public function getArrayBenefitsAttribute()
+    {
+        return explode(',', $this->benefits);
     }
 
     private function numericMaskRemove($value)

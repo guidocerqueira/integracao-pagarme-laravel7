@@ -42,6 +42,7 @@
                                         <p class="text-muted text-sm mb-0"><b>Cobrança: </b>R$ {{ $plan->amount_formated }} a cada {{ $plan->days }} dias.</p>
                                         <p class="text-muted text-sm mb-0"><b>Período de Teste: </b>{{ $plan->trial_days }} dia(s).</p>
                                         <p class="text-muted text-sm mb-0"><b>Pagamento aceito: </b>{{ $plan->payment_methods_name }}</p>
+                                        <p class="text-muted text-sm mb-0"><b>Benefícios: </b>{{ $plan->benefits }}</p>
                                     </div>
                                 </div>
                             </div>

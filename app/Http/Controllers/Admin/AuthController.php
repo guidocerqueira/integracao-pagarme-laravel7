@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\PagarmeRequestService;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -15,7 +16,12 @@ class AuthController extends Controller
             return redirect()->route('admin.formlogin');
         }
 
-        return view('admin.home');
+        $pagarme = new PagarmeRequestService();
+        $balance = $pagarme->getBalance();
+
+        return view('admin.home', [
+            'balance' => $balance
+        ]);
     }
 
     public function formLogin()

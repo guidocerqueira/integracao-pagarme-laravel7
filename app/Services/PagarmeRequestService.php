@@ -48,4 +48,9 @@ class PagarmeRequestService extends BaseRequestService
 
         return $method[$type];
     }
+
+    public function getBalance()
+    {
+        return $this->get('balance');
+    }
 }

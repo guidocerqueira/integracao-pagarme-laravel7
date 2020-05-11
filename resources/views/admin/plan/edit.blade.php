@@ -73,6 +73,11 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label>Benefícios (separe por vírgulas)</label>
+                        <textarea class="form-control" rows="4" name="benefits" placeholder="Informe os benefícios separados por vírgula...">{{ old('benefits') ?? $plan->benefits }}</textarea>
+                    </div>
                 </div>
 
                 <div class="card-footer text-right">
