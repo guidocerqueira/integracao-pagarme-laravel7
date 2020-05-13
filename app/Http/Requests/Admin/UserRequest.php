@@ -24,7 +24,7 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->user;
+        $id = $this->user ?? Auth::id();
 
         return [
             'name' => 'required|min:3|max:191',

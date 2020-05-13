@@ -24,7 +24,7 @@
                             <li>{{ $benefit }}</li>
                         @endforeach
                     </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-primary">Assinar</button>
+                    <a href="{{ route('site.account.plan.subscription', ['id' => $plan->id]) }}" class="btn btn-lg btn-block btn-primary">Assinar</a>
                 </div>
             </div>
         </div>

@@ -17,6 +17,11 @@ class Plan extends Model
         'benefits'
     ];
 
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
     public function setAmountAttribute($value)
     {
         $this->attributes['amount'] = $this->numericMaskRemove($value);

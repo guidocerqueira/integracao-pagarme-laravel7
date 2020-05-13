@@ -15,6 +15,47 @@ class PagarmeRequestService extends BaseRequestService
         return $this->get(sprintf('%s/%s', 'customers', $id));
     }
 
+    public function createCustomer($name, $email, $external_id, array $phone_numbers, array $documents, $type = 'individual', $country = 'br')
+    {
+        $data = [
+            'name' => $name,
+            'email' => $email,
+            'external_id' => (string) $external_id,
+            'phone_numbers' => $phone_numbers,
+            'documents' => $documents,
+            'type' => $type,
+            'country' => $country
+        ];
+
+        return $this->post('customers', $data);
+    }
+
+    public function createCreditCard($customer_id, $card_number, $card_expiration_date, $card_holder_name, $card_cvv)
+    {
+        $data = [
+            'customer_id' => $customer_id,
+            'card_number' => $card_number,
+            'card_expiration_date' => $card_expiration_date,
+            'card_expiration_date' => $card_expiration_date,
+            'card_holder_name' => $card_holder_name,
+            'card_cvv' => $card_cvv
+        ];
+
+        return $this->post('cards', $data);
+    }
+
+    public function createSubscription(array $customer, $plan_id, $payment_method, $card_id = null)
+    {
+        $data = [
+            'customer' => $customer,
+            'plan_id' => $plan_id,
+            'payment_method' => $payment_method,
+            'card_id' => $card_id
+        ];
+
+        return $this->post('subscriptions', $data);
+    }
+
     public function createPlan($amount, $days, $name, $payment_methods = null, $trial_days = null)
     {
         $data = [

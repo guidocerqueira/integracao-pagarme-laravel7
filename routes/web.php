@@ -15,6 +15,8 @@ Route::group(['namespace' => 'Site', 'as' => 'site.'], function(){
         Route::put('account/info', 'SiteController@updateInfoAccount')->name('account.info.update');
         Route::get('account/transaction', 'SiteController@transactionAccount')->name('account.transaction');
         Route::get('account/logout', 'SiteController@logout')->name('account.logout');
+        Route::get('account/plan/{id}/subscription', 'SiteController@planSubscription')->name('account.plan.subscription');
+        Route::post('account/plan/{id}/subscription', 'SiteController@planSubscriptionStore')->name('account.plan.subscription.store');
     });
 });
 
