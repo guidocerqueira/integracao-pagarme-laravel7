@@ -112,6 +112,7 @@ class UserController extends Controller
         try {
             DB::beginTransaction();
 
+            $user->setIsAdminAttribute($request->is_admin);
             $user->fill($request->all());
             $user->save();
 

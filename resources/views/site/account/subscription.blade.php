@@ -71,7 +71,7 @@
     @if ($plan->payment_methods == 2 || $plan->payment_methods == 3)
     <hr>
     <h3 class="display-6">Pagar com Boleto</h3>
-    <a href="javascript:;" class="btn btn-primary">Gerar Boleto</a>
+    <a href="{{ route('site.account.plan.subscription.store.billet', ['id' => $plan->id]) }}" class="btn btn-primary">Gerar Boleto</a>
     @endif
 </div>
 @endsection

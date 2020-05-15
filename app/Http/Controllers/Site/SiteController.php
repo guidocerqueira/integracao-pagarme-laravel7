@@ -266,27 +266,8 @@ class SiteController extends Controller
             ]);
 
             if (isset($subscription['current_transaction']['id'])) {
-                $user->transactions()->create([
-                    'transaction_code' => $subscription['current_transaction']['transaction_code'],
-                    'status' => $subscription['current_transaction']['status'],
-                    'authorization_code' => $subscription['current_transaction']['authorization_code'],
-                    'amount' => $subscription['current_transaction']['amount'],
-                    'authorized_amount' => $subscription['current_transaction']['authorized_amount'],
-                    'paid_amount' => $subscription['current_transaction']['paid_amount'],
-                    'refunded_amount' => $subscription['current_transaction']['refunded_amount'],
-                    'installments' => $subscription['current_transaction']['installments'],
-                    'cost' => $subscription['current_transaction']['cost'],
-                    'subscription_code' => $subscription['current_transaction']['subscription_code'],
-                    'postback_url' => $subscription['current_transaction']['postback_url'],
-                    'card_holder_name' => $subscription['current_transaction']['card_holder_name'],
-                    'card_last_digits' => $subscription['current_transaction']['card_last_digits'],
-                    'card_first_digits' => $subscription['current_transaction']['card_first_digits'],
-                    'card_brand' => $subscription['current_transaction']['card_brand'],
-                    'payment_method' => $subscription['current_transaction']['payment_method'],
-                    'boleto_url' => $subscription['current_transaction']['boleto_url'],
-                    'boleto_barcode' => $subscription['current_transaction']['boleto_barcode'],
-                    'boleto_expiration_date' => $subscription['current_transaction']['boleto_expiration_date']
-                ]);
+                $transaction = $this->managerTransactionData($subscription['current_transaction']);
+                $user->transactions()->create($transaction);
             }
 
             DB::commit();
@@ -300,5 +281,93 @@ class SiteController extends Controller
                 'message' => $e->getMessage()
             ]);
         }
+    }
+
+    public function planSubscriptionStoreBillet($id)
+    {
+        $plan = Plan::find($id);
+
+        if (is_null($plan)) {
+            abort(404, 'Plano não encontrado.');
+        }
+
+        $user = Auth::user();
+
+        $pagarme = new PagarmeRequestService();
+
+        try {
+            DB::beginTransaction();
+
+            if (!is_null($user->pagarme_id)) {
+                $customer = $pagarme->getCustomer($user->pagarme_id);
+            }else{
+                $phone_numbers = [sprintf('%s%s', '+55', $user->cell)];
+                $documents = [
+                    [
+                        'type' => 'cpf',
+                        'number' => $user->cpf
+                    ]
+                ];
+    
+                $customer = $pagarme->createCustomer($user->name, $user->email, $user->id, $phone_numbers, $documents);
+            }
+    
+            if (isset($customer['errors'])) {
+                $errors = collect($customer['errors'])->pluck('message');
+                return redirect()->back()->withInput()->withErrors($errors);
+            }
+    
+            $subscription = $pagarme->createSubscription($customer, $plan->code, 'boleto');
+    
+            if (isset($subscription['errors'])) {
+                $errors = collect($subscription['errors'])->pluck('message');
+                return redirect()->back()->withInput()->withErrors($errors);
+            }
+
+            $user->subscriptions()->create([
+                'subscription_code' => $subscription['id'],
+                'plan_id' => $plan->id,
+                'status' => $subscription['status']
+            ]);
+
+            $transaction = $this->managerTransactionData($subscription['current_transaction']);
+            $user->transactions()->create($transaction);
+
+            DB::commit();
+            return redirect()->route('site.account.home')->with([
+                'color' => 'success',
+                'message' => 'Plano contratado com sucesso, para obter o boleto para pagamento, <a target="_blank" href="'.$transaction['boleto_url'].'">clique aqui</a>'
+            ]);
+        } catch (Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withInput()->withErrors([
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    private function managerTransactionData($transaction)
+    {
+        return [
+            'transaction_code' => $transaction['id'],
+            'status' => $transaction['status'],
+            'authorization_code' => $transaction['authorization_code'],
+            'amount' => $transaction['amount'],
+            'authorized_amount' => $transaction['authorized_amount'],
+            'paid_amount' => $transaction['paid_amount'],
+            'refunded_amount' => $transaction['refunded_amount'],
+            'installments' => $transaction['installments'],
+            'cost' => $transaction['cost'],
+            'subscription_code' => $transaction['subscription_id'],
+            'postback_url' => $transaction['postback_url'],
+            'card_holder_name' => $transaction['card_holder_name'],
+            'card_last_digits' => $transaction['card_last_digits'],
+            'card_first_digits' => $transaction['card_first_digits'],
+            'card_brand' => $transaction['card_brand'],
+            'payment_method' => $transaction['payment_method'],
+            'boleto_url' => $transaction['boleto_url'],
+            'boleto_barcode' => $transaction['boleto_barcode'],
+            'boleto_expiration_date' => date('Y-m-d H:i:s', strtotime($transaction['boleto_expiration_date']))
+        ];
     }
 }

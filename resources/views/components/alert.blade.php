@@ -16,6 +16,6 @@
         @else
             <i class="icon fas fa-ban"></i>
         @endif
-        {{ session()->get('message') }}
+        {!! session()->get('message') !!}
     </div>
 @endif

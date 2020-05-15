@@ -17,6 +17,7 @@ Route::group(['namespace' => 'Site', 'as' => 'site.'], function(){
         Route::get('account/logout', 'SiteController@logout')->name('account.logout');
         Route::get('account/plan/{id}/subscription', 'SiteController@planSubscription')->name('account.plan.subscription');
         Route::post('account/plan/{id}/subscription', 'SiteController@planSubscriptionStore')->name('account.plan.subscription.store');
+        Route::get('account/plan/{id}/subscription/billet', 'SiteController@planSubscriptionStoreBillet')->name('account.plan.subscription.store.billet');
     });
 });
 
