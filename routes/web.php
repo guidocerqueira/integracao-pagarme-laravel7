@@ -34,5 +34,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.', 'prefix' => 'admin'], fu
         Route::resource('product', 'ProductController');
 
         Route::resource('pagarme/plan', 'PlanController');
+
+        Route::get('pagarme/transaction', 'TransactionController@index')->name('transaction.index');
     });
 });

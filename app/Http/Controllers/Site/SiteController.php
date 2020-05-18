@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Services\PagarmeRequestService;
 use App\Http\Requests\Admin\UserRequest;
+use App\Transaction;
 use Illuminate\Support\Facades\Validator;
 
 class SiteController extends Controller
@@ -163,7 +164,11 @@ class SiteController extends Controller
 
     public function transactionAccount()
     {
-        return view('site.account.transaction');
+        $transactions = Transaction::where('user_id', Auth::id())->get();
+
+        return view('site.account.transaction', [
+            'transactions' => $transactions
+        ]);
     }
 
     public function planSubscription($id)

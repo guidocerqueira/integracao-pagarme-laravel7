@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\User;
 
 class PagarmeRequestService extends BaseRequestService
 {
@@ -27,7 +28,15 @@ class PagarmeRequestService extends BaseRequestService
             'country' => $country
         ];
 
-        return $this->post('customers', $data);
+        $result = $this->post('customers', $data);
+
+        if(!isset($result['errors'])){
+            $user = User::find($external_id);
+            $user->pagarme_id = $result['id'];
+            $user->save();
+        }
+
+        return $result;
     }
 
     public function createCreditCard($customer_id, $card_number, $card_expiration_date, $card_holder_name, $card_cvv)

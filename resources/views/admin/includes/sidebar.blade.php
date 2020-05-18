@@ -64,30 +64,12 @@
                                 <p>Planos</p>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Recebedores</p>
-                            </a>
-                        </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.transaction.index') }}" class="nav-link {{ Request::segment(2) == 'pagarme' && Request::segment(3) == 'transaction' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Transações</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Assinaturas</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Transferências</p>
-                            </a>
-                        </li> --}}
                     </ul>
                 </li>
             </ul>

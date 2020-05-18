@@ -6,27 +6,27 @@
         @include('site.includes.sidebar')
     </div>
     <div class="col-md-9 bg-light rounded">
-        <h4 class="text-right mb-5 mt-3 text-secondary">Minhas Compras</h4>
+        <h4 class="text-right mb-5 mt-3 text-secondary">Minhas Transações</h4>
         <table id="datatable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Office</th>
-                    <th>Age</th>
-                    <th>Start date</th>
-                    <th>Salary</th>
+                    <th>Código</th>
+                    <th>Valor</th>
+                    <th>Método Pagameto</th>
+                    <th>Status</th>
+                    <th>Ação</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach ($transactions as $transaction)
                 <tr>
-                    <td>Tiger Nixon</td>
-                    <td>System Architect</td>
-                    <td>Edinburgh</td>
-                    <td>61</td>
-                    <td>2011/04/25</td>
-                    <td>$320,800</td>
+                    <td>{{ $transaction->transaction_code }}</td>
+                    <td>R$ {{ $transaction->amount_formated }}</td>
+                    <td>{{ $transaction->payment_method }}</td>
+                    <td>{{ $transaction->status }}</td>
+                    <td>{!! $transaction->payment_method == 'boleto' && $transaction->status == 'waiting_payment' ? '<a target="_blank" href="'.$transaction->boleto_url.'">Ver Boleto</a>' : '--' !!}</td>
                 </tr>
+                @endforeach
             </tbody>
         </table>
     </div>

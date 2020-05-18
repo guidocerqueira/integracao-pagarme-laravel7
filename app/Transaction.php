@@ -33,4 +33,14 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getAmountAttribute($value)
+    {
+        return $value/100;
+    }
+
+    public function getAmountFormatedAttribute()
+    {
+        return number_format($this->amount, 2, ',', '.');
+    }
 }

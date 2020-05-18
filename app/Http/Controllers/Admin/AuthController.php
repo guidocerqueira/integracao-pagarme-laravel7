@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\PagarmeRequestService;
 use Illuminate\Support\Facades\Auth;
+use App\Services\PagarmeRequestService;
 
 class AuthController extends Controller
 {
@@ -19,8 +20,11 @@ class AuthController extends Controller
         $pagarme = new PagarmeRequestService();
         $balance = $pagarme->getBalance();
 
+        $transactions = Transaction::orderBy('id', 'DESC')->limit(10)->get();
+
         return view('admin.home', [
-            'balance' => $balance
+            'balance' => $balance,
+            'transactions' => $transactions
         ]);
     }
 
