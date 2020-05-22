@@ -30,26 +30,18 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         $schedule->call(function(){
-            $transactions = Transaction::where('payment_method', '!=', 'boleto')->where('status', '!=', 'paid')->get();
+            $transactions = Transaction::where('payment_method', 'boleto')->where('status', '!=', 'paid')->get();
 
             $pagarme = new PagarmeRequestService();
 
             foreach ($transactions as $transaction) {
                 $t = $pagarme->getTransaction($transaction->transaction_code);
 
-                DB::table('postbacks')->insert([
-                    'postback' => json_encode($t)
-                ]);
-
                 if (!isset($t['errors'])) {
                     $transaction->status = $t['status'];
                     $transaction->save();
                 }
             }
-
-            DB::table('postbacks')->insert([
-                'postback' => json_encode(['teste' => 'tudo certo'])
-            ]);
         })->everyMinute();
     }
 
