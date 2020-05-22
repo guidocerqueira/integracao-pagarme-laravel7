@@ -7,6 +7,7 @@
     </div>
     <div class="col-md-9 bg-light rounded">
         <h4 class="text-right mb-5 mt-3 text-secondary">Minhas Transações</h4>
+        <x-alert/>
         <table id="datatable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>

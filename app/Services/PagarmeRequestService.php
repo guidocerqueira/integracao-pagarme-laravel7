@@ -6,6 +6,87 @@ use App\User;
 
 class PagarmeRequestService extends BaseRequestService
 {
+    private $address;
+    private $billing;
+    private $shipping;
+    private $items;
+
+    public function setAddress($street, $street_number, $zipcode, $country, $state, $city)
+    {
+        $this->address = [
+            'street' => $street,
+            'street_number' => $street_number,
+            'zipcode' => $zipcode,
+            'country' => $country,
+            'state' => $state,
+            'city' => $city
+        ];
+
+        return $this;
+    }
+
+    public function setBilling($name)
+    {
+        $this->billing = [
+            'name' => $name,
+            'address' => $this->address
+        ];
+        return $this;
+    }
+
+    public function setShipping($name, $fee)
+    {
+        $this->shipping = [
+            'name' => $name,
+            'fee' => $fee,
+            'address' => $this->address
+        ];
+        return $this;
+    }
+
+    public function addItem($id, $title, $unit_price, $quantity, $tangible = true)
+    {
+        $item = [
+            "id" => (string) $id,
+            "title" => $title,
+            "unit_price" => $unit_price,
+            "quantity" => $quantity,
+            "tangible" => $tangible
+        ];
+
+        $this->items[] = $item; 
+        return $this;
+    }
+
+    public function charge(array $customer, $amount, $payment_method, $card_id = null)
+    {
+        $data = [
+            'customer' => [
+                'birthday' => $customer['birthday'],
+                'name' => $customer['name'],
+                'email' => $customer['email'],
+                'external_id' => $customer['external_id'],
+                'phone_numbers' => $customer['phone_numbers'],
+                'documents' => [
+                    [
+                        'type' => $customer['documents'][0]['type'],
+                        'number' => $customer['documents'][0]['number']
+                    ]
+                ],
+                'type' => $customer['type'],
+                'country' => $customer['country']
+            ],
+            'amount' => $this->shipping['fee'] + $amount,
+            'payment_method' => $payment_method,
+            'card_id' => $card_id,
+            'billing' => $this->billing,
+            'shipping' => $this->shipping,
+            'items' => $this->items
+        ];
+
+        return $this->post('transactions', $data);
+    }
+
     public function getCustomers()
     {
         return $this->get('customers');

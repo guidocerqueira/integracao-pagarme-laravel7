@@ -21,7 +21,7 @@
                     <li class="text-muted">10x de R$ {{ number_format($product->price/10, 2, ',', '.') }} sem juros</li>
                     <li class="text-success">Frete Grátis</li>
                 </ul>
-                <a href="javascript:;" class="btn btn-lg btn-block btn-primary">Comprar</a>
+                <a href="{{ route('site.cart.product.add', ['id' => $product->id]) }}" class="btn btn-lg btn-block btn-primary">Comprar</a>
             </div>
         </div>
     </div>
