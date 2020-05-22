@@ -12,8 +12,6 @@ Route::group(['namespace' => 'Site', 'as' => 'site.'], function(){
     Route::get('cart/product/{id}/add', 'SiteController@productAdd')->name('cart.product.add');
     Route::get('cart/product/{id}/action/{type}', 'SiteController@updateAmount')->name('cart.product.update.amount');
     Route::get('cart/product/{id}/remove', 'SiteController@removeProduct')->name('cart.product.remove');
-
-    Route::post('postback', 'PostbackController@postback')->name('postback');
     
     Route::group(['middleware' => 'auth'], function () {
         Route::get('account/home', 'SiteController@homeAccount')->name('account.home');
