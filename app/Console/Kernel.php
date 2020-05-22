@@ -2,8 +2,9 @@
 
 namespace App\Console;
 
-use App\Services\PagarmeRequestService;
 use App\Transaction;
+use Illuminate\Support\Facades\DB;
+use App\Services\PagarmeRequestService;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -41,6 +42,10 @@ class Kernel extends ConsoleKernel
                     $transaction->save();
                 }
             }
+
+            DB::table('postbacks')->insert([
+                'postback' => json_encode(['teste' => 'tudo certo'])
+            ]);
         })->everyMinute();
     }
 
