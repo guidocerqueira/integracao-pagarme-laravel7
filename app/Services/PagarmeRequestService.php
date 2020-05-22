@@ -77,6 +77,8 @@ class PagarmeRequestService extends BaseRequestService
                 'country' => $customer['country']
             ],
             'amount' => $this->shipping['fee'] + $amount,
+            'async' => false,
+            'postback_url' => route('site.postback'),
             'payment_method' => $payment_method,
             'card_id' => $card_id,
             'billing' => $this->billing,
@@ -140,7 +142,8 @@ class PagarmeRequestService extends BaseRequestService
             'customer' => $customer,
             'plan_id' => $plan_id,
             'payment_method' => $payment_method,
-            'card_id' => $card_id
+            'card_id' => $card_id,
+            'postback_url' => route('site.postback')
         ];
 
         return $this->post('subscriptions', $data);
