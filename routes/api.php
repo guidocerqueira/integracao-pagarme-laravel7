@@ -19,5 +19,6 @@ use Illuminate\Support\Facades\Route;
 // });
 Route::group(['namespace' => 'Site', 'as' => 'site.'], function(){
     Route::post('postback', 'PostbackController@postback')->name('postback');
+    Route::post('postback/subscription', 'PostbackController@postbackSubscription')->name('postback.subscription');
 });
 

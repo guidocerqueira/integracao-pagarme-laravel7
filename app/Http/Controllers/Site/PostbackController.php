@@ -26,4 +26,22 @@ class PostbackController extends Controller
 
         return;
     }
+
+    public function postbackSubscription(Request $request)
+    {
+        DB::table('postbacks')->insert([
+            'postback' => json_encode($request->all())
+        ]);
+
+        // $transaction_code = $request->all()['transaction']['id'];
+
+        // $transaction = Transaction::where('transaction_code', $transaction_code)->first();
+
+        // if (!is_null($transaction)) {
+        //     $transaction->status = $request->all()['transaction']['status'];
+        //     $transaction->save();
+        // }
+
+        return;
+    }
 }

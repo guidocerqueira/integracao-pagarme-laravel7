@@ -143,7 +143,7 @@ class PagarmeRequestService extends BaseRequestService
             'plan_id' => $plan_id,
             'payment_method' => $payment_method,
             'card_id' => $card_id,
-            'postback_url' => route('site.postback')
+            'postback_url' => route('site.postback.subscription')
         ];
 
         return $this->post('subscriptions', $data);
