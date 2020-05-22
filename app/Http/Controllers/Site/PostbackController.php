@@ -47,7 +47,7 @@ class PostbackController extends Controller
             $neWtransaction = Transaction::where('transaction_code', $current_transaction['id'])->first();
 
             if (is_null($neWtransaction)) {
-                Transaction::create($this->managerTransactionData($current_transaction));
+                $subscription->user->transactions()->create($this->managerTransactionData($current_transaction));
             }
         }
 
