@@ -10,10 +10,7 @@ class PostbackController extends Controller
 {
     public function postback(Request $request)
     {
-        $file = fopen(url('pagarme.txt'), 'a');
-        $results = print_r($request, true);
-        fwrite($file, $results);
-        fclose($file);
+        dd($request);
         return;
     }
 }
