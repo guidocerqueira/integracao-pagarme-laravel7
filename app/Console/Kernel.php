@@ -37,6 +37,10 @@ class Kernel extends ConsoleKernel
             foreach ($transactions as $transaction) {
                 $t = $pagarme->getTransaction($transaction->transaction_code);
 
+                DB::table('postbacks')->insert([
+                    'postback' => json_encode($t)
+                ]);
+
                 if (!isset($t['errors'])) {
                     $transaction->status = $t['status'];
                     $transaction->save();
