@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Subscription;
 use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,14 +34,14 @@ class PostbackController extends Controller
             'postback' => json_encode($request->all())
         ]);
 
-        // $transaction_code = $request->all()['transaction']['id'];
+        $subscription_code = $request->all()['subscription']['id'];
 
-        // $transaction = Transaction::where('transaction_code', $transaction_code)->first();
+        $subscription = Subscription::where('subscription_code', $subscription_code)->first();
 
-        // if (!is_null($transaction)) {
-        //     $transaction->status = $request->all()['transaction']['status'];
-        //     $transaction->save();
-        // }
+        if (!is_null($subscription)) {
+            $subscription->status = $request->all()['subscription']['status'];
+            $subscription->save();
+        }
 
         return;
     }

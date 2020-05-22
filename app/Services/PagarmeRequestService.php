@@ -122,6 +122,11 @@ class PagarmeRequestService extends BaseRequestService
         return $result;
     }
 
+    public function getTransaction($id)
+    {
+        return $this->get(sprintf('%s/%s', 'transactions', $id));
+    }
+
     public function createCreditCard($customer_id, $card_number, $card_expiration_date, $card_holder_name, $card_cvv)
     {
         $data = [

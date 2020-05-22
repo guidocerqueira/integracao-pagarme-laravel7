@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Services\PagarmeRequestService;
+use App\Transaction;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -25,6 +27,21 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+
+        $schedule->call(function(){
+            $transactions = Transaction::where('payment_method', '!=', 'boleto')->where('status', '!=', 'paid')->get();
+
+            $pagarme = new PagarmeRequestService();
+
+            foreach ($transactions as $transaction) {
+                $t = $pagarme->getTransaction($transaction->transaction_code);
+
+                if (!isset($t['errors'])) {
+                    $transaction->status = $t['status'];
+                    $transaction->save();
+                }
+            }
+        })->everyMinute();
     }
 
     /**
